@@ -11,11 +11,21 @@ function App() {
   const [email, setEmail] = useState("");
   const [patientData, setPatientData] = useState({});
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        padding: "2rem",
+        textAlign: "center",
+      }}
+    >
       <Routes>
-        <Route path="/" element={<Navigate to="/docora" replace />} />
+        <Route path="/" element={<Navigate to="/docora-fe" replace />} />
 
-        <Route path="/docora" element={<LandingPage />} />
+        <Route path="/docora-fe" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
       <PatientForm
@@ -28,7 +38,7 @@ function App() {
         patientData={patientData}
         email={email}
       ></ReportDisplay>
-    </>
+    </div>
   );
 }
 
