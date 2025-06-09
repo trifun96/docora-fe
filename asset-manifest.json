@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/docora-fe/static/css/main.737825f7.css",
+    "main.js": "/docora-fe/static/js/main.cd9d818e.js",
+    "static/js/453.cf813705.chunk.js": "/docora-fe/static/js/453.cf813705.chunk.js",
+    "index.html": "/docora-fe/index.html",
+    "main.737825f7.css.map": "/docora-fe/static/css/main.737825f7.css.map",
+    "main.cd9d818e.js.map": "/docora-fe/static/js/main.cd9d818e.js.map",
+    "453.cf813705.chunk.js.map": "/docora-fe/static/js/453.cf813705.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.737825f7.css",
+    "static/js/main.cd9d818e.js"
+  ]
+}
