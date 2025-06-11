@@ -1,4 +1,4 @@
-/* Glavni header */
+
 .landing-header {
   position: fixed;
   top: 0;
@@ -11,7 +11,6 @@
   user-select: none;
 }
 
-/* Wrapper za sadržaj headera - centriran i fleksibilan */
 .header-content {
   max-width: 1200px;
   margin: 0 auto;

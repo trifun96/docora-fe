@@ -63,7 +63,6 @@ export async function loginUser(email, password) {
 
     const data = await response.json();
 
-    // ✅ Sačuvaj token i user-a u localStorage
     if (data.token && data.user) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -76,3 +75,4 @@ export async function loginUser(email, password) {
     throw error;
   }
 }
+

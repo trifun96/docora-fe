@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Header from '../../../users/components/Header/Header';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -62,6 +63,8 @@ export default function RegisterForm() {
   };
 
   return (
+    <>
+    <Header/>
     <div style={{ maxWidth: 400, margin: 'auto' }}>
       <h2>Registracija korisnika</h2>
       {message && <p style={{ color: 'green' }}>{message}</p>}
@@ -120,9 +123,10 @@ export default function RegisterForm() {
           />
         </div>
         <button type="submit" style={{ marginTop: 10 }}>
-          Registruj se
+          Registruj korisnika
         </button>
       </form>
     </div>
+    </>
   );
 }

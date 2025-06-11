@@ -11,16 +11,22 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  try {
-    const result = await loginUser(email, password);
-    navigate("/docora-fe/application");
-  } catch (error) {
-    setError("❌ Pogrešan email ili lozinka.");
-  }
-};
+    try {
+      const result = await loginUser(email, password);
+
+      if (result.user.role === "admin") {
+        navigate("/docora-fe/admin-page"); // 👈 admin ide na adminPage
+      } else {
+        navigate("/docora-fe/application"); // 👈 ostali idu ovde
+      }
+    } catch (error) {
+      setError("❌ Pogrešan email ili lozinka.");
+    }
+  };
 
   return (
     <div className="login-wrapper">

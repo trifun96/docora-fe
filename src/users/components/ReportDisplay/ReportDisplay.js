@@ -6,8 +6,6 @@ import { sendReport } from '../../../api/api';
 pdfMake.vfs = pdfFonts.vfs;
 
 const ReportDisplay = React.memo(({ report, email, patientData }) => {
-    console.log(email, 'email');
-
     const [loading, setLoading] = useState(false);
 
     const generateAndSendPdf = useCallback(() => {
@@ -18,7 +16,6 @@ const ReportDisplay = React.memo(({ report, email, patientData }) => {
             return;
         }
 
-        // Čišćenje izveštaja uklanjanjem nepotrebnih delova
         const cleanedReport = report
             .replace(/Potpis lekara:.*(\r?\n)?/gi, '')
             .replace(/Potpis:.*(\r?\n)?/gi, '')
