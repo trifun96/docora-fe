@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../components/PatientFrom.css';
+import './PatientFrom.css';
 import DatePicker from 'react-datepicker';
-import { generateReport } from '../api';
+import { generateReport } from '../../../api/api';
 import 'react-datepicker/dist/react-datepicker.css';
+import Header from "../Header/Header";
 import {
     Button, Grid
 } from '@mui/material';
@@ -187,104 +188,107 @@ ${opis}
     };
 
     return (
+    <>
+      <Header />
+
+      <div className="form-wrapper">
         <form onSubmit={handleSubmit} className="patient-form">
-            {error && <div className="error-message">{error}</div>}
+          {error && <div className="error-message">{error}</div>}
 
-            <div className="form-row">
-                <input
-                    placeholder="Ime"
-                    value={ime}
-                    onChange={(e) => setIme(e.target.value)}
-                    required
-                />
-                <input
-                    placeholder="Prezime"
-                    value={prezime}
-                    onChange={(e) => setPrezime(e.target.value)}
-                    required
-                />
-            </div>
+          <div className="form-row">
+            <input
+              placeholder="Ime"
+              value={ime}
+              onChange={(e) => setIme(e.target.value)}
+              required
+            />
+            <input
+              placeholder="Prezime"
+              value={prezime}
+              onChange={(e) => setPrezime(e.target.value)}
+              required
+            />
+          </div>
 
-            <div className="form-row">
-                <input
-                    placeholder="Telefon"
-                    value={telefon}
-                    onChange={(e) => setTelefon(e.target.value)}
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-            </div>
+          <div className="form-row">
+            <input
+              placeholder="Telefon"
+              value={telefon}
+              onChange={(e) => setTelefon(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-            <div className="form-row">
-                <div className="form-group">
-                    <DatePicker
-                        selected={datumRodjenja}
-                        onChange={(date) => setDatumRodjenja(date)}
-                        placeholderText="Datum rođenja"
-                        dateFormat="dd/MM/yyyy"
-                        showYearDropdown
-                        scrollableYearDropdown
-                        yearDropdownItemNumber={100}
-                        className="datepicker-input"
-                    />
-                </div>
-                <div className="form-group">
-                    <DatePicker
-                        selected={kontrola}
-                        onChange={(date) => setDatumKontrola(date)}
-                        placeholderText="Kontrola"
-                        dateFormat="dd/MM/yyyy"
-                        showYearDropdown
-                        scrollableYearDropdown
-                        yearDropdownItemNumber={100}
-                        className="datepicker-input"
-                    />
-                </div>
+          <div className="form-row">
+            <div className="form-group">
+              <DatePicker
+                selected={datumRodjenja}
+                onChange={(date) => setDatumRodjenja(date)}
+                placeholderText="Datum rođenja"
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                className="datepicker-input"
+              />
             </div>
+            <div className="form-group">
+              <DatePicker
+                selected={kontrola}
+                onChange={(date) => setDatumKontrola(date)}
+                placeholderText="Kontrola"
+                dateFormat="dd/MM/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                className="datepicker-input"
+              />
+            </div>
+          </div>
 
-            <div className="form-row">
-                <textarea
-                    placeholder="Opis ili napomene"
-                    value={opis}
-                    onChange={(e) => setOpis(e.target.value)}
-                    required
-                    rows={6}
-                />
-            </div>
+          <div className="form-row">
+            <textarea
+              placeholder="Opis ili napomene"
+              value={opis}
+              onChange={(e) => setOpis(e.target.value)}
+              required
+              rows={6}
+            />
+          </div>
 
-            <div className="form-row button-row">
-                <Grid item xs={12} sm={6}>
-                    <Button
-                        variant="outlined"
-                        color="info"
-                        style={{
-                            backgroundColor: 'white',
-                            color: 'blue'
-                        }}
-                        startIcon={listening ? <MicOffIcon /> : <MicIcon />}
-                        onClick={toggleListening}
-                        fullWidth
-                    >
-                        {listening ? 'Zaustavi snimanje' : 'Govori'}
-                    </Button>
-                </Grid>
-                <Grid item xs={12} sm={6} >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        disabled={loading}
-                        fullWidth
-                    >
-                        {loading ? 'Generišem...' : 'Generiši izveštaj'}
-                    </Button>
-                </Grid>
-            </div>
+          <div className="form-row button-row">
+            <Grid item xs={12} sm={6}>
+              <Button
+                variant="outlined"
+                color="info"
+                style={{ backgroundColor: 'white', color: 'blue' }}
+                startIcon={listening ? <MicOffIcon /> : <MicIcon />}
+                onClick={toggleListening}
+                fullWidth
+              >
+                {listening ? 'Zaustavi snimanje' : 'Govori'}
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={loading}
+                fullWidth
+              >
+                {loading ? 'Generišem...' : 'Generiši izveštaj'}
+              </Button>
+            </Grid>
+          </div>
         </form>
-    );
+      </div>
+    </>
+  );
 }

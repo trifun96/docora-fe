@@ -12,20 +12,6 @@ export default function RegisterForm() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/users');
-        const users = await response.json();
-        console.log('Registrovani korisnici:', users);
-      } catch (err) {
-        console.error('Greška prilikom dohvatanja korisnika:', err);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
   const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
@@ -39,7 +25,7 @@ export default function RegisterForm() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3001/api/register', {
+      const response = await fetch('http://localhost:3002/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

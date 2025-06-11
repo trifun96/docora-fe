@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { sendReport } from '../api';
+import { sendReport } from '../../../api/api';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -124,26 +124,34 @@ const ReportDisplay = React.memo(({ report, email, patientData }) => {
         });
     }, [report, email, patientData]);
 
-    return (
-        <div style={{ marginTop: 20 }}>
-            <h2>Generisani izveštaj</h2>
-            <pre
-                style={{
-                    whiteSpace: 'pre-wrap',
-                    backgroundColor: '#f5f5f5',
-                    padding: 10,
-                    maxHeight: 300,
-                    overflowY: 'auto',
-                    borderRadius: 4,
-                }}
-            >
-                {report}
-            </pre>
-            <button onClick={generateAndSendPdf} disabled={loading} style={{ marginTop: 10 }}>
-                {loading ? 'Šaljem...' : 'Pošalji PDF na mejl'}
-            </button>
-        </div>
-    );
+  return (
+  <>
+    {report && (
+      <div style={{ marginTop: 20 }}>
+        <h2>Generisani izveštaj</h2>
+        <pre
+          style={{
+            whiteSpace: 'pre-wrap',
+            backgroundColor: '#f5f5f5',
+            padding: 10,
+            maxHeight: 300,
+            overflowY: 'auto',
+            borderRadius: 4,
+          }}
+        >
+          {report}
+        </pre>
+        <button
+          onClick={generateAndSendPdf}
+          disabled={loading}
+          style={{ marginTop: 10 }}
+        >
+          {loading ? 'Šaljem...' : 'Pošalji PDF na mejl'}
+        </button>
+      </div>
+    )}
+  </>
+);
 });
 
 export default ReportDisplay;

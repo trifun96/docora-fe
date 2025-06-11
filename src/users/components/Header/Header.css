@@ -1,17 +1,31 @@
+/* Glavni header */
 .landing-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 70px;
- background-color: #3a7ca5;
+  background-color: #3a7ca5;
   box-shadow: 0 2px 8px rgba(85, 176, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 2rem;
   z-index: 1000;
   user-select: none;
+}
+
+/* Wrapper za sadržaj headera - centriran i fleksibilan */
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo stilovi */
+.logo-container {
+  display: flex;
+  align-items: center;
 }
 
 .landing-header svg {
@@ -19,4 +33,88 @@
   width: auto;
   pointer-events: none;
   user-select: none;
+}
+
+/* === Dropdown === */
+.user-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-toggle {
+  background: #ffffff;
+  color: #3a7ca5;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease-in-out;
+}
+
+.dropdown-toggle:hover {
+  background: #e6f0fa;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 180px;
+  margin-top: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 0;
+  z-index: 1001;
+}
+
+.dropdown-menu li {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f2f2f2;
+}
+
+.logout-btn {
+  color: red;
+}
+
+/* === Responsivnost === */
+@media (max-width: 600px) {
+  .landing-header {
+    height: auto;
+  }
+
+  .header-content {
+    flex-direction: row;
+    padding: 0.75rem 1rem;
+  }
+
+  .dropdown-toggle {
+    width: 100%;
+    border-radius: 4px;
+    padding: 12px;
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    left: 0;
+    right: 0;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .dropdown-menu li {
+    padding: 14px 18px;
+    font-size: 15px;
+  }
 }
