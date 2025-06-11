@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../../users/components/Header/Header';
+import { registerUser } from '../../../api/api';
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -20,47 +21,25 @@ export default function RegisterForm() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage('');
-    setError('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setMessage('');
+  setError('');
 
-    try {
-      const response = await fetch('http://localhost:3002/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const text = await response.text();
-      console.log('Raw response text:', text);
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        throw new Error(`Nevalidan JSON: ${text}`);
-      }
-
-      if (!response.ok) {
-        setError(data.error || 'Došlo je do greške');
-      } else {
-        setMessage('Uspešna registracija!');
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          ordinacija: '',
-          adresa: '',
-        });
-      }
-    } catch (err) {
-      console.error('Greška:', err);
-      setError('Ne mogu da se povežem sa serverom.');
-    }
-  };
+  try {
+    const result = await registerUser(formData);
+    setMessage('Uspešna registracija!');
+    setFormData({
+      name: '',
+      email: '',
+      password: '',
+      ordinacija: '',
+      adresa: '',
+    });
+  } catch (err) {
+    setError(err.message || 'Došlo je do greške');
+  }
+};
 
   return (
     <>

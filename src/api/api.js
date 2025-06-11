@@ -75,4 +75,37 @@ export async function loginUser(email, password) {
     throw error;
   }
 }
+export async function registerUser(formData) {
+  const token = localStorage.getItem("token"); // Token iz localStorage
+
+  try {
+    const response = await fetch(`${baseUrl}/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, 
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const text = await response.text();
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new Error(`Nevalidan JSON: ${text}`);
+    }
+
+    if (!response.ok) {
+      throw new Error(data.message || data.error || "Došlo je do greške");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Registracija greška:", error.message);
+    throw error;
+  }
+}
+
 
