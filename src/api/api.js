@@ -3,8 +3,6 @@ import { baseUrl } from "./config";
 export async function generateReport(prompt) {
   const token = localStorage.getItem("token");
 
-  console.log(prompt, "prompt");
-
   const response = await fetch(`${baseUrl}/api/generate-report`, {
     method: "POST",
     headers: {
@@ -22,7 +20,6 @@ export async function generateReport(prompt) {
   }
 
   const data = await response.json();
-  console.log("generateReport data:", data);
 
   return data.report; // <-- OVO JE KLJUČNO
 }

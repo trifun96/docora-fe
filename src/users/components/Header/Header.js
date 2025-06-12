@@ -11,7 +11,6 @@ const Header = () => {
 
 useEffect(() => {
   const storedUser = localStorage.getItem("user");
-  console.log("Stored user:", storedUser); // vidi šta dobijaš
   if (storedUser) {
     try {
       setUser(JSON.parse(storedUser));
