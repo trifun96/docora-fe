@@ -5,7 +5,7 @@ import { sendReport } from '../../../api/api';
 
 pdfMake.vfs = pdfFonts.vfs;
 
-const ReportDisplay = React.memo(({ report, email, patientData }) => {
+const ReportDisplay = React.memo(({ report, email, patientData, clearReport  }) => {
     const [loading, setLoading] = useState(false);
 
     const generateAndSendPdf = useCallback(() => {
@@ -112,6 +112,7 @@ const ReportDisplay = React.memo(({ report, email, patientData }) => {
             try {
                 await sendReport(email, blob);
                 alert('Izveštaj je uspešno poslat na mejl!');
+                clearReport()
             } catch (error) {
                 console.error('Greška pri slanju mejla:', error);
                 alert('Došlo je do greške prilikom slanja mejla.');
@@ -119,7 +120,7 @@ const ReportDisplay = React.memo(({ report, email, patientData }) => {
                 setLoading(false);
             }
         });
-    }, [report, email, patientData]);
+    }, [report, email, patientData, clearReport]);
 
   return (
   <>

@@ -10,6 +10,9 @@ import RegisterForm from "./admin/components/RegistrationForm/RegistrationForm";
 
 function App() {
   const [role, setRole] = useState(null);
+  const [report, setReport] = useState("");
+  const [email, setEmail] = useState("");
+  const [patientData, setPatientData] = useState({});
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -28,9 +31,9 @@ function App() {
   const isUser = role === "user";
   const isAdmin = role === "admin";
 
-  const [report, setReport] = useState("");
-  const [email, setEmail] = useState("");
-  const [patientData, setPatientData] = useState({});
+  const clearReport = () => {
+    setReport("");
+  };
 
   return (
     <div>
@@ -69,8 +72,12 @@ function App() {
 
         <Route path="*" element={<Navigate to="/docora-fe" replace />} />
       </Routes>
-
-      <ReportDisplay report={report} patientData={patientData} email={email} />
+      <ReportDisplay
+        report={report}
+        patientData={patientData}
+        email={email}
+        clearReport={clearReport}
+      />
     </div>
   );
 }

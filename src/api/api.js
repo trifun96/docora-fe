@@ -1,7 +1,7 @@
 import { baseUrl } from "./config";
 
 export async function generateReport(prompt) {
-  const token = localStorage.getItem("token"); // Uzmi token iz localStorage
+  const token = localStorage.getItem("token");
 
   console.log(prompt, "prompt");
 
