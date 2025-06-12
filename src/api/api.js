@@ -28,7 +28,7 @@ export async function generateReport(prompt) {
 }
 
 export async function sendReport(email, pdfBlob) {
-  const token = localStorage.getItem("token"); // Uzimamo token iz localStorage
+  const token = localStorage.getItem("token");
 
   const formData = new FormData();
   formData.append("email", email);
@@ -38,7 +38,6 @@ export async function sendReport(email, pdfBlob) {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`, // <-- Dodaj token ovde
-      // Ne dodaj 'Content-Type' jer je multipart/form-data, fetch će to sam odraditi
     },
     body: formData,
   });
