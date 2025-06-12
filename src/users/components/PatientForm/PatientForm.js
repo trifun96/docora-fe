@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 import { Button, Grid } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export default function PatientForm({
   onGenerateReport,
@@ -114,7 +114,6 @@ export default function PatientForm({
   };
 
   const validateEmail = (email) => {
-    // Jednostavna regex validacija emaila
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
@@ -148,21 +147,21 @@ Email: ${email}
 Kontrola: ${formatDatumKontrole(kontrola)}
 
 Instrukcije:
-Sledeći tekst je diktat ili opis pregleda. Tvoj zadatak je da napišeš precizan i profesionalan izveštaj na osnovu tog teksta.
-Ako se u tekstu direktno ili indirektno navodi da pacijent ima bol, nelagodnost ili problem sa zubom (čak i ako nije izričito rečeno „pacijent je pregledan“), izveštaj treba da sadrži tu informaciju i napomenu da je pacijent pregledan i da će, po potrebi, biti urađen snimak ili sprovedena terapija.
-Ako su pomenute mere opreza nakon intervencije navedi obavezno , ne preskaci (ne konzumirati hranu i piće naredna 2–3 sata, bez fizičke aktivnosti, bez pušenja, bez alkohola itd).
-Ako se u tekstu pominje savetovanje pacijenta da koristi lekove za bolove (analgetike), navedite to u izveštaju. Možeš koristiti primer: "Preporučeni analgetici u slucaju bolova po potrebi: Paracetamol, Brufen ili Kafetin, prema uputstvu lekara."
-Ispravi pravopisne i gramatičke greške, ukloni nepotrebna ponavljanja i fraze.
-Jako vazno, ispisuj samo ono sto ti je receno, bez ikakvih dodatnih reci!
-Ne izmišljaj informacije koje nisu jasno navedene!
-Izveštaj mora biti jasan, sažet i profesionalan.
+Sledeći tekst je diktat ili opis pregleda. Tvoj zadatak je da napišeš tačan, jasan i profesionalan izveštaj isključivo na osnovu tog teksta.
+
+⚠️ Vrlo važno:
+- NE dodaj ništa što nije izgovoreno ili napisano u tekstu.
+- NE izmišljaj dodatne informacije ili kontekste.
+- NE koristi opšte medicinske fraze ako nisu deo originalnog teksta.
+- NE koristi uvodne ili završne rečenice koje nisu bile deo diktata (npr. "Pacijent se javlja zbog...").
+- Ispravi pravopisne i gramatičke greške, ali zadrži originalni smisao.
+- Izveštaj mora sadržati samo ono što je eksplicitno rečeno u tekstu ispod – NIŠTA VIŠE.
 
 Tekst za obradu:
 ${opis}
-    `;
+`;
 
     try {
-      // Poziv backend API-ja za generisanje izveštaja (tekst)
       const report = await generateReport(fullPrompt);
       onGenerateReport(report);
 
