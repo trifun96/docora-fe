@@ -43,7 +43,6 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-    <Header/>
     <div style={{ maxWidth: 400, margin: 'auto' }}>
       <h2>Registracija korisnika</h2>
       {message && <p style={{ color: 'green' }}>{message}</p>}

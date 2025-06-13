@@ -49,6 +49,7 @@ export async function loginUser(email, password) {
     const response = await fetch(`${baseUrl}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ email, password }),
     });
 
@@ -59,11 +60,8 @@ export async function loginUser(email, password) {
 
     const data = await response.json();
 
-    if (data.token && data.user) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("role", data.user.role);
-    }
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("role", data.user.role);
 
     return data;
   } catch (error) {
@@ -71,6 +69,42 @@ export async function loginUser(email, password) {
     throw error;
   }
 }
+
+export async function logoutUser() {
+  await fetch(`${baseUrl}/api/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  localStorage.removeItem("user");
+  localStorage.removeItem("role");
+}
+
+export async function getSession() {
+  try {
+    const response = await fetch(`${baseUrl}/api/session`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Session error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("getSession error:", error.message);
+    throw error;
+  }
+}
+
+
 export async function registerUser(formData) {
   const token = localStorage.getItem("token"); // Token iz localStorage
 

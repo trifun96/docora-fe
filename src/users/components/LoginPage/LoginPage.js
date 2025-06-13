@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../api/api";
 import "./LoginPage.css";
-import Header from "../Header/Header";
 
-const LoginPage = () => {
+const LoginPage = ({ setRole, setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,10 +17,20 @@ const LoginPage = () => {
     try {
       const result = await loginUser(email, password);
 
-      if (result.user.role === "admin") {
-        navigate("/docora-fe/admin-page"); // 👈 admin ide na adminPage
+      if (result.user) {
+        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("role", result.user.role);
+
+        setRole(result.user.role);
+        setUser(result.user);
+
+        if (result.user.role === "admin") {
+          navigate("/docora-fe/admin-page");
+        } else {
+          navigate("/docora-fe/application");
+        }
       } else {
-        navigate("/docora-fe/application"); // 👈 ostali idu ovde
+        setError("❌ Nevažeći odgovor servera.");
       }
     } catch (error) {
       setError("❌ Pogrešan email ili lozinka.");
@@ -30,8 +39,6 @@ const LoginPage = () => {
 
   return (
     <div className="login-wrapper">
-      <Header />
-
       <main className="login-main">
         <form className="login-form" onSubmit={handleSubmit}>
           <h2>Prijava</h2>
@@ -46,6 +53,7 @@ const LoginPage = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="Unesite email"
+            autoComplete="current-email"
           />
 
           <label htmlFor="password">Lozinka:</label>
@@ -56,6 +64,7 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="Unesite lozinku"
+            autoComplete="current-password"
           />
 
           <button type="submit" className="login-button">

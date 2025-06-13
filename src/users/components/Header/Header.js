@@ -2,30 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import DocoraLogo from "../logoDocora";
 import "./Header.css";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../../api/api";
 
-const Header = () => {
-  const [user, setUser] = useState(null);
+const Header = ({ role, setRole, userName }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
   const navigate = useNavigate();
 
-useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
+  const handleLogout = async () => {
     try {
-      setUser(JSON.parse(storedUser));
-    } catch (e) {
-      console.error("Error parsing user from localStorage:", e);
+      await logoutUser();
+      setRole(null);
+      localStorage.removeItem("user");
+      navigate("/docora-fe/login");
+    } catch (error) {
+      console.error("Greška pri odjavi:", error);
     }
-  }
-}, []);
-
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/docora-fe/login");
   };
 
   useEffect(() => {
@@ -47,13 +39,13 @@ useEffect(() => {
           <DocoraLogo />
         </div>
 
-        {user && (
+        {role && userName && (
           <div className="user-dropdown" ref={dropdownRef}>
             <button
               className="dropdown-toggle"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              {user.name} ▼
+         {userName} ▼
             </button>
             {dropdownOpen && (
               <ul className="dropdown-menu">

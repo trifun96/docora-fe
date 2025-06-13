@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
+import Header from "./users/components/Header/Header";
 import LandingPage from "./users/components/LandingPage/Background";
 import LoginPage from "./users/components/LoginPage/LoginPage";
 import PatientForm from "./users/components/PatientForm/PatientForm";
@@ -12,48 +11,60 @@ import RegisterForm from "./admin/components/RegistrationForm/RegistrationForm";
 import ProtectedRoute from "./admin/helpers/ProtectedRoutes";
 import RedirectIfLoggedIn from "./admin/helpers/RedirectIfLoggedIn";
 
+import { getSession } from "./api/api";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const [role, setRole] = useState(null);
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true);
+
   const [report, setReport] = useState("");
   const [email, setEmail] = useState("");
   const [patientData, setPatientData] = useState({});
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const { role } = jwtDecode(token);
-        setRole(role);
-      } catch {
-        localStorage.removeItem("token");
-        setRole(null);
+ useEffect(() => {
+  getSession()
+    .then((data) => {
+      if (data?.role) setRole(data.role);
+      if (data?.user) {
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+      } else {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+          setUser(JSON.parse(savedUser));
+        }
       }
-    }
-  }, []);
+    })
+    .catch(() => {
+      setRole(null);
+      setUser(null);
+    })
+    .finally(() => setLoading(false));
+}, []);
+
 
   const clearReport = () => {
     setReport("");
   };
 
+  if (loading) return <p>Učitavanje...</p>;
+
   return (
     <div>
+      <Header role={role} setRole={setRole} userName={user?.name} />
+
       <Routes>
         <Route path="/" element={<Navigate to="/docora-fe" replace />} />
 
-        <Route
-          path="/docora-fe"
-          element={
-            <RedirectIfLoggedIn>
-              <LandingPage />
-            </RedirectIfLoggedIn>
-          }
-        />
+        <Route path="/docora-fe" element={<LandingPage />} />
 
         <Route
           path="/docora-fe/login"
           element={
-            <RedirectIfLoggedIn>
-              <LoginPage />
+            <RedirectIfLoggedIn role={role}>
+              <LoginPage setRole={setRole} setUser={setUser} />
             </RedirectIfLoggedIn>
           }
         />
@@ -61,7 +72,7 @@ function App() {
         <Route
           path="/docora-fe/application"
           element={
-            <ProtectedRoute requiredRole="user">
+            <ProtectedRoute requiredRole="user" userRole={role}>
               <PatientForm
                 onGenerateReport={setReport}
                 onEmailChange={setEmail}
@@ -74,7 +85,7 @@ function App() {
         <Route
           path="/docora-fe/admin-page"
           element={
-            <ProtectedRoute requiredRole="admin">
+            <ProtectedRoute requiredRole="admin" userRole={role}>
               <RegisterForm />
             </ProtectedRoute>
           }
@@ -89,6 +100,7 @@ function App() {
         email={email}
         clearReport={clearReport}
       />
+
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );

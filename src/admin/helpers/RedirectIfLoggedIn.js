@@ -1,35 +1,17 @@
-import { Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useLocation, Navigate } from "react-router-dom";
 
-const RedirectIfLoggedIn = ({ children }) => {
-  const [shouldRedirect, setShouldRedirect] = useState(false);
-  const [redirectPath, setRedirectPath] = useState("");
+const RedirectIfLoggedIn = ({ children, role }) => {
+  const location = useLocation();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  if (!role) {
+    return children;
+  }
 
-    if (token) {
-      try {
-        const { role } = jwtDecode(token);
-        toast.info("Prvo se izloguj pa onda pristupi ovoj stranici.", {
-          toastId: "already-logged-in", // sprečava duplikate
-        });
+  let redirectPath = null;
+  if (role === "admin") redirectPath = "/docora-fe/admin-page";
+  else if (role === "user") redirectPath = "/docora-fe/application";
 
-        setShouldRedirect(true);
-        if (role === "admin") {
-          setRedirectPath("/docora-fe/admin-page");
-        } else if (role === "user") {
-          setRedirectPath("/docora-fe/application");
-        }
-      } catch {
-        localStorage.removeItem("token");
-      }
-    }
-  }, []);
-
-  if (shouldRedirect && redirectPath) {
+  if (redirectPath && location.pathname !== redirectPath) {
     return <Navigate to={redirectPath} replace />;
   }
 

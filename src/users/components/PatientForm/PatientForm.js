@@ -180,7 +180,6 @@ ${opis}
     }
   };
 
-  // Opcionalno resetovanje forme
   const resetForm = () => {
     setIme("");
     setPrezime("");
@@ -193,7 +192,6 @@ ${opis}
 
   return (
     <>
-      <Header />
 
       <div className="form-wrapper">
         <form onSubmit={handleSubmit} className="patient-form">
