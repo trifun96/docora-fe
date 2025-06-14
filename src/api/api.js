@@ -1,14 +1,13 @@
 import { baseUrl } from "./config";
 
+// ↪️ GENERISANJE IZVEŠTAJA
 export async function generateReport(prompt) {
-  const token = localStorage.getItem("token");
-
   const response = await fetch(`${baseUrl}/api/generate-report`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // Dodaj token u header
     },
+    credentials: "include", // ⬅️ cookie-based auth
     body: JSON.stringify({ prompt }),
   });
 
@@ -20,22 +19,18 @@ export async function generateReport(prompt) {
   }
 
   const data = await response.json();
-
-  return data.report; // <-- OVO JE KLJUČNO
+  return data.report;
 }
 
+// ↪️ SLANJE IZVEŠTAJA
 export async function sendReport(email, pdfBlob) {
-  const token = localStorage.getItem("token");
-
   const formData = new FormData();
   formData.append("email", email);
   formData.append("pdf", pdfBlob, "izvestaj.pdf");
 
   const response = await fetch(`${baseUrl}/api/send-report`, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`, // <-- Dodaj token ovde
-    },
+    credentials: "include", // ⬅️ cookie-based auth
     body: formData,
   });
 
@@ -44,12 +39,13 @@ export async function sendReport(email, pdfBlob) {
   }
 }
 
+// ↪️ LOGIN
 export async function loginUser(email, password) {
   try {
     const response = await fetch(`${baseUrl}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      credentials: "include", // ⬅️ bitno za primanje cookie-ja
       body: JSON.stringify({ email, password }),
     });
 
@@ -60,6 +56,7 @@ export async function loginUser(email, password) {
 
     const data = await response.json();
 
+    // Više ne čuvaš token, samo podatke o useru
     localStorage.setItem("user", JSON.stringify(data.user));
     localStorage.setItem("role", data.user.role);
 
@@ -70,21 +67,23 @@ export async function loginUser(email, password) {
   }
 }
 
+// ↪️ LOGOUT
 export async function logoutUser() {
   await fetch(`${baseUrl}/api/logout`, {
     method: "POST",
-    credentials: "include",
+    credentials: "include", // ⬅️ šalje cookie kako bi server znao koga da izloguje
   });
 
   localStorage.removeItem("user");
   localStorage.removeItem("role");
 }
 
+// ↪️ SESSION (provera da li postoji token u cookie-ju)
 export async function getSession() {
   try {
     const response = await fetch(`${baseUrl}/api/session`, {
       method: "GET",
-      credentials: "include",
+      credentials: "include", // ⬅️ cookie-based auth
       headers: {
         "Content-Type": "application/json",
       },
@@ -104,18 +103,15 @@ export async function getSession() {
   }
 }
 
-
 export async function registerUser(formData) {
-  const token = localStorage.getItem("token"); // Token iz localStorage
-
   try {
     const response = await fetch(`${baseUrl}/api/register`, {
       method: "POST",
+      credentials: "include", // ⬅️ koristi cookie token
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, 
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     });
 
     const text = await response.text();
@@ -137,5 +133,3 @@ export async function registerUser(formData) {
     throw error;
   }
 }
-
-
