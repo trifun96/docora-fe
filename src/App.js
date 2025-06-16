@@ -10,7 +10,6 @@ import ReportDisplay from "./users/components/ReportDisplay/ReportDisplay";
 import RegisterForm from "./admin/components/RegistrationForm/RegistrationForm";
 import ProtectedRoute from "./admin/helpers/ProtectedRoutes";
 import RedirectIfLoggedIn from "./admin/helpers/RedirectIfLoggedIn";
-import { fetchProfile } from "./api/api";
 
 import { getSession } from "./api/api";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,25 +26,15 @@ function App() {
 useEffect(() => {
   getSession()
     .then((data) => {
-      let shouldFetchProfile = false;
-
       if (data?.role) setRole(data.role);
       if (data?.user) {
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
-        shouldFetchProfile = true;
       } else {
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
           setUser(JSON.parse(savedUser));
-          shouldFetchProfile = true;
         }
-      }
-
-      if (shouldFetchProfile) {
-        return fetchProfile();
-      } else {
-        return null;
       }
     })
     .then((profileData) => {
@@ -66,7 +55,7 @@ useEffect(() => {
 
   return (
     <div>
-      <Header role={role} setRole={setRole} userName={user?.name} setProfile={setProfile} />
+      <Header role={role} setRole={setRole} userName={user?.name} />
 
       <Routes>
         <Route path="/" element={<Navigate to="/docora-fe" replace />} />
@@ -80,7 +69,6 @@ useEffect(() => {
               <LoginPage
                 setRole={setRole}
                 setUser={setUser}
-                setProfile={setProfile}
               />
             </RedirectIfLoggedIn>
           }
@@ -116,7 +104,6 @@ useEffect(() => {
         patientData={patientData}
         email={email}
         clearReport={clearReport}
-        profile={profile}
       />
 
       <ToastContainer position="top-center" autoClose={3000} />

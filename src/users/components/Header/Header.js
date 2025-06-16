@@ -4,7 +4,7 @@ import "./Header.css";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../../api/api";
 
-const Header = ({ role, setRole, userName, setProfile }) => {
+const Header = ({ role, setRole, userName }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
   const navigate = useNavigate();
@@ -14,7 +14,6 @@ const Header = ({ role, setRole, userName, setProfile }) => {
       await logoutUser();
       setRole(null);
       localStorage.removeItem("user");
-      setProfile(null);
       navigate("/docora-fe/login");
     } catch (error) {
       console.error("Greška pri odjavi:", error);

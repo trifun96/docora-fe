@@ -6,11 +6,9 @@ import { toast } from 'react-toastify';
 
 pdfMake.vfs = pdfFonts.vfs;
 
-const ReportDisplay = React.memo(({ report, email, patientData, clearReport, profile}) => {
+const ReportDisplay = React.memo(({ report, email, patientData, clearReport}) => {
   const [loading, setLoading] = useState(false);
-  console.log(profile,'profile');
   
-
   const generateAndSendPdf = useCallback(() => {
     if (!email || !email.includes('@')) {
       toast.warning('Email adresa nije validna.', {
@@ -50,7 +48,7 @@ const ReportDisplay = React.memo(({ report, email, patientData, clearReport, pro
 const docDefinition = {
   content: [
     {
-      text: `${profile.clinic}`,
+      text: 'Alta Medica',
       style: 'mainHeader',
     },
     {
@@ -68,7 +66,7 @@ const docDefinition = {
       margin: [0, 5, 0, 20],
     },
     {
-      text: `${profile.address}`,
+      text: 'Djordja Stanojevica 12, Beograd',
       style: 'subHeader',
     },
     {
@@ -146,7 +144,7 @@ const docDefinition = {
           alignment: 'left',
         },
         {
-          text: `Lekar specijalista: ${profile.name}`,
+          text: 'Lekar specijalista: Marija Danilovic',
           style: 'footerInfo',
           alignment: 'right',
         },
