@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../api/api";
+import { loginUser, fetchProfile } from "../../../api/api";
 import "./LoginPage.css";
 
-const LoginPage = ({ setRole, setUser }) => {
+const LoginPage = ({ setRole, setUser, setProfile }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -23,6 +23,8 @@ const LoginPage = ({ setRole, setUser }) => {
 
         setRole(result.user.role);
         setUser(result.user);
+        const profileData = await fetchProfile();
+        setProfile(profileData);
 
         if (result.user.role === "admin") {
           navigate("/docora-fe/admin-page");

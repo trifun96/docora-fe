@@ -133,3 +133,15 @@ export async function registerUser(formData) {
     throw error;
   }
 }
+
+export async function fetchProfile() {
+  const response = await fetch(`${baseUrl}/api/me`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!response.ok) {
+    throw new Error(`Profile error: ${response.status}`);
+  }
+  return await response.json()
+}

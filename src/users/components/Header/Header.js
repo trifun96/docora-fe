@@ -4,7 +4,7 @@ import "./Header.css";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../../api/api";
 
-const Header = ({ role, setRole, userName }) => {
+const Header = ({ role, setRole, userName, setProfile }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ const Header = ({ role, setRole, userName }) => {
     try {
       await logoutUser();
       setRole(null);
+      setProfile(null)
       localStorage.removeItem("user");
       navigate("/docora-fe/login");
     } catch (error) {

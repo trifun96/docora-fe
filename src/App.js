@@ -10,40 +10,47 @@ import ReportDisplay from "./users/components/ReportDisplay/ReportDisplay";
 import RegisterForm from "./admin/components/RegistrationForm/RegistrationForm";
 import ProtectedRoute from "./admin/helpers/ProtectedRoutes";
 import RedirectIfLoggedIn from "./admin/helpers/RedirectIfLoggedIn";
+import { fetchProfile } from "./api/api";
 
 import { getSession } from "./api/api";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [role, setRole] = useState(null);
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [report, setReport] = useState("");
   const [email, setEmail] = useState("");
   const [patientData, setPatientData] = useState({});
+  const [profile, setProfile] = useState(null); // dodato
 
- useEffect(() => {
-  getSession()
-    .then((data) => {
-      if (data?.role) setRole(data.role);
-      if (data?.user) {
-        setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
-      } else {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-          setUser(JSON.parse(savedUser));
+  useEffect(() => {
+    getSession()
+      .then((data) => {
+        if (data?.role) setRole(data.role);
+        if (data?.user) {
+          setUser(data.user);
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          const savedUser = localStorage.getItem("user");
+          if (savedUser) {
+            setUser(JSON.parse(savedUser));
+          }
         }
-      }
-    })
-    .catch(() => {
-      setRole(null);
-      setUser(null);
-    })
-    .finally(() => setLoading(false));
-}, []);
 
+        // Poziv fetchProfile
+        return fetchProfile();
+      })
+      .then((profileData) => {
+        setProfile(profileData);
+      })
+      .catch(() => {
+        setRole(null);
+        setUser(null);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const clearReport = () => {
     setReport("");
@@ -53,7 +60,7 @@ function App() {
 
   return (
     <div>
-      <Header role={role} setRole={setRole} userName={user?.name} />
+      <Header role={role} setRole={setRole} userName={user?.name} setProfile={setProfile} />
 
       <Routes>
         <Route path="/" element={<Navigate to="/docora-fe" replace />} />
@@ -64,7 +71,11 @@ function App() {
           path="/docora-fe/login"
           element={
             <RedirectIfLoggedIn role={role}>
-              <LoginPage setRole={setRole} setUser={setUser} />
+              <LoginPage
+                setRole={setRole}
+                setUser={setUser}
+                setProfile={setProfile}
+              />
             </RedirectIfLoggedIn>
           }
         />
@@ -99,6 +110,7 @@ function App() {
         patientData={patientData}
         email={email}
         clearReport={clearReport}
+        profile={profile}
       />
 
       <ToastContainer position="top-center" autoClose={3000} />

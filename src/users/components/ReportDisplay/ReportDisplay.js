@@ -6,8 +6,10 @@ import { toast } from 'react-toastify';
 
 pdfMake.vfs = pdfFonts.vfs;
 
-const ReportDisplay = React.memo(({ report, email, patientData, clearReport }) => {
+const ReportDisplay = React.memo(({ report, email, patientData, clearReport, profile}) => {
   const [loading, setLoading] = useState(false);
+  console.log(profile,'profile');
+  
 
   const generateAndSendPdf = useCallback(() => {
     if (!email || !email.includes('@')) {
@@ -48,7 +50,7 @@ const ReportDisplay = React.memo(({ report, email, patientData, clearReport }) =
 const docDefinition = {
   content: [
     {
-      text: 'Dental Medic',
+      text: `${profile.clinic}`,
       style: 'mainHeader',
     },
     {
@@ -66,7 +68,7 @@ const docDefinition = {
       margin: [0, 5, 0, 20],
     },
     {
-      text: 'Ulica Djordja Stanojevica 43, 31210 Požega',
+      text: `${profile.address}`,
       style: 'subHeader',
     },
     {
@@ -144,7 +146,7 @@ const docDefinition = {
           alignment: 'left',
         },
         {
-          text: 'Lekar specijalista: Dr Jelena Maksimović',
+          text: `Lekar specijalista: ${profile.name}`,
           style: 'footerInfo',
           alignment: 'right',
         },
