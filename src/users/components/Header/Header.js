@@ -13,8 +13,8 @@ const Header = ({ role, setRole, userName, setProfile }) => {
     try {
       await logoutUser();
       setRole(null);
-      setProfile(null)
       localStorage.removeItem("user");
+      setProfile(null);
       navigate("/docora-fe/login");
     } catch (error) {
       console.error("Greška pri odjavi:", error);
@@ -46,7 +46,7 @@ const Header = ({ role, setRole, userName, setProfile }) => {
               className="dropdown-toggle"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-         {userName} ▼
+              {userName} ▼
             </button>
             {dropdownOpen && (
               <ul className="dropdown-menu">

@@ -23,34 +23,40 @@ function App() {
   const [report, setReport] = useState("");
   const [email, setEmail] = useState("");
   const [patientData, setPatientData] = useState({});
-  const [profile, setProfile] = useState(null); // dodato
+  const [profile, setProfile] = useState(null);
+useEffect(() => {
+  getSession()
+    .then((data) => {
+      let shouldFetchProfile = false;
 
-  useEffect(() => {
-    getSession()
-      .then((data) => {
-        if (data?.role) setRole(data.role);
-        if (data?.user) {
-          setUser(data.user);
-          localStorage.setItem("user", JSON.stringify(data.user));
-        } else {
-          const savedUser = localStorage.getItem("user");
-          if (savedUser) {
-            setUser(JSON.parse(savedUser));
-          }
+      if (data?.role) setRole(data.role);
+      if (data?.user) {
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        shouldFetchProfile = true;
+      } else {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+          setUser(JSON.parse(savedUser));
+          shouldFetchProfile = true;
         }
+      }
 
-        // Poziv fetchProfile
+      if (shouldFetchProfile) {
         return fetchProfile();
-      })
-      .then((profileData) => {
-        setProfile(profileData);
-      })
-      .catch(() => {
-        setRole(null);
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+      } else {
+        return null;
+      }
+    })
+    .then((profileData) => {
+      if (profileData) setProfile(profileData);
+    })
+    .catch(() => {
+      setRole(null);
+      setUser(null);
+    })
+    .finally(() => setLoading(false));
+}, []);
 
   const clearReport = () => {
     setReport("");
