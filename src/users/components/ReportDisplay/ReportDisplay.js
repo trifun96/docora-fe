@@ -45,66 +45,116 @@ const ReportDisplay = React.memo(({ report, email, patientData, clearReport }) =
       .replace(/\n{2,}/g, '\n')
       .trim();
 
-    const docDefinition = {
-      content: [
-        { text: 'Dental Medic', style: 'header', alignment: 'center' },
-        { text: 'Ulica Djordja Stanojevica 43, 31210 Požega', style: 'headerSub', alignment: 'center' },
+const docDefinition = {
+  content: [
+    {
+      text: 'Dental Medic',
+      style: 'mainHeader',
+    },
+    {
+      canvas: [
         {
-          style: 'patientInfo',
-          table: {
-            widths: ['auto', '*'],
-            body: [
-              ['Ime:', patientData.ime || ''],
-              ['Prezime:', patientData.prezime || ''],
-              ['Datum rođenja:', patientData.datumRodjenja || ''],
-              ['Telefon:', patientData.telefon || ''],
-              ['Email:', patientData.email || ''],
-              ['Datum kontrole:', patientData.kontrola || ''],
-            ],
-          },
-          layout: 'noBorders',
-          margin: [0, 50, 0, 10],
-        },
-        { text: cleanedReport, style: 'content', margin: [0, 10, 0, 10] },
-        {
-          text: `Datum generisanja: ${new Date().toLocaleDateString()}`,
-          style: 'footer',
-          absolutePosition: { x: 40, y: 780 },
-        },
-        {
-          text: 'Lekar specijalista: DR. Jelena Maksimović',
-          style: 'footer',
-          absolutePosition: { x: 370, y: 780 },
+          type: 'line',
+          x1: 0,
+          y1: 0,
+          x2: 515,
+          y2: 0,
+          lineWidth: 1,
+          lineColor: '#007ACC',
         },
       ],
-      styles: {
-        header: {
-          fontSize: 20,
-          bold: true,
-          alignment: 'center',
-          margin: [0, 0, 0, 5],
-        },
-        headerSub: {
-          fontSize: 14,
-          bold: true,
-          alignment: 'center',
-          margin: [0, 0, 0, 5],
-        },
-        content: {
-          fontSize: 12,
-          lineHeight: 1.5,
-        },
-        footer: {
-          fontSize: 10,
-          italics: true,
-        },
-        patientInfo: {
-          fontSize: 11,
-          margin: [0, 10, 0, 10],
-        },
+      margin: [0, 5, 0, 20],
+    },
+    {
+      text: 'Ulica Djordja Stanojevica 43, 31210 Požega',
+      style: 'subHeader',
+    },
+    {
+      style: 'patientInfoBox',
+      table: {
+        widths: ['30%', '70%'],
+        body: [
+          ['Ime:', patientData.ime || ''],
+          ['Prezime:', patientData.prezime || ''],
+          ['Datum rođenja:', patientData.datumRodjenja || ''],
+          ['Telefon:', patientData.telefon || ''],
+          ['Email:', patientData.email || ''],
+          ['Datum kontrole:', patientData.kontrola || ''],
+        ],
       },
-      pageMargins: [40, 40, 40, 40],
+      layout: {
+        hLineWidth: () => 0,
+        vLineWidth: () => 0,
+        paddingTop: () => 4,
+        paddingBottom: () => 4,
+        paddingLeft: () => 0,
+        paddingRight: () => 0,
+      },
+    },
+    {
+      text: 'Izveštaj o pregledu',
+      style: 'sectionTitle',
+      margin: [0, 30, 0, 10],
+    },
+    {
+      text: cleanedReport,
+      style: 'reportContent',
+    },
+  ],
+  styles: {
+    mainHeader: {
+      fontSize: 22,
+      bold: true,
+      alignment: 'center',
+      color: '#007ACC',
+      margin: [0, 0, 0, 4],
+    },
+    subHeader: {
+      fontSize: 12,
+      alignment: 'center',
+      italics: true,
+      margin: [0, 0, 0, 20],
+    },
+    sectionTitle: {
+      fontSize: 14,
+      bold: true,
+      decoration: 'underline',
+    },
+    reportContent: {
+      fontSize: 12,
+      lineHeight: 1.6,
+    },
+    footerInfo: {
+      fontSize: 10,
+      italics: true,
+    },
+    patientInfoBox: {
+      margin: [0, 10, 0, 10],
+      fontSize: 11,
+      fillColor: '#f3f6f9',
+      color: '#333',
+    },
+  },
+  footer: function (currentPage, pageCount) {
+    return {
+      columns: [
+        {
+          text: `Datum: ${new Date().toLocaleDateString()}`,
+          style: 'footerInfo',
+          alignment: 'left',
+        },
+        {
+          text: 'Lekar specijalista: Dr Jelena Maksimović',
+          style: 'footerInfo',
+          alignment: 'right',
+        },
+      ],
+      margin: [40, 0, 40, 20], // levo, gore, desno, dole
     };
+  },
+  pageMargins: [40, 40, 40, 60],
+};
+
 
     setLoading(true);
 

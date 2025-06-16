@@ -140,26 +140,32 @@ export default function PatientForm({
     };
 
     const fullPrompt = `
-Pacijent: ${ime} ${prezime}
-Datum rođenja: ${formatDatumKontrole(datumRodjenja)}
-Telefon: ${telefon}
-Email: ${email}
-Kontrola: ${formatDatumKontrole(kontrola)}
+⚠️ Strogo pravilo:
+🚫 NEMOJ koristiti uvodne rečenice, izmišljene zaključke, naslove koji nisu eksplicitno izgovoreni u tekstu ispod.
 
-Instrukcije:
-Sledeći tekst je diktat ili opis pregleda. Tvoj zadatak je da napišeš tačan, jasan i profesionalan izveštaj isključivo na osnovu tog teksta.
+✅ DOZVOLJENO je:
+- Ako tekst sadrži više celina (nalaz, terapija, preporuka itd.), slobodno ih razdvoji u odvojene sekcije sa odgovarajućim naslovima:
+NALAZ:
+TERAPIJA:
+PREPORUKE:
+LEČENJE:
+- Ako ovakve informacije nisu jasno izdvojene u tekstu, nemoj ih dodavati.
 
-⚠️ Vrlo važno:
-- NE dodaj ništa što nije izgovoreno ili napisano u tekstu.
-- NE izmišljaj dodatne informacije ili kontekste.
-- NE koristi opšte medicinske fraze ako nisu deo originalnog teksta.
-- NE koristi uvodne ili završne rečenice koje nisu bile deo diktata (npr. "Pacijent se javlja zbog...").
-- Ispravi pravopisne i gramatičke greške, ali zadrži originalni smisao.
-- Izveštaj mora sadržati samo ono što je eksplicitno rečeno u tekstu ispod – NIŠTA VIŠE.
+📌 Prilikom razdvajanja:
+- Koristi naslove samo ako ih možeš direktno izvući iz konteksta teksta.
+- Ako je tekst samo jedna celina – ne razdvajaj ništa.
+- ✍️ NEMOJ koristiti nabrajanja sa crtama (-), brojevima (1. 2. 3.) ili zvezdicama (*). Piši rečenice jednu ispod druge kao normalan tekst.
 
-Tekst za obradu:
+❗ZABRANJENO je:
+- izmišljanje kategorija ako nisu očigledne
+- dodavanje uvodnih rečenica poput: „Pacijent se javlja zbog...”, „Tokom pregleda...”, „Preporuka je...”
+
+🔒 Tekst mora ostati veran originalu. Ispravljaj samo gramatičke i pravopisne greške.
+
+📝 Tekst za obradu:
 ${opis}
 `;
+
 
     try {
       const report = await generateReport(fullPrompt);
